@@ -1,6 +1,7 @@
 module.exports = {
   content: [
-    "../frontend/templates/**/*.html",
+    "../frontend/templates/**/*.{html,jinja,twig}",
+    "./frontend/static/**/*.{js,ts}",
   ],
   theme: {
     extend: {},

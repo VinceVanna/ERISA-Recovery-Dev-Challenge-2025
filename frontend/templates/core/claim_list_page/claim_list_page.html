@@ -1,0 +1,10 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div 
+    hx-get="/load_claim_list/"
+    hx-trigger="load"
+    hx-swap="innerHTML"
+    id="response_claim"
+    ></div>
+{% endblock %}
