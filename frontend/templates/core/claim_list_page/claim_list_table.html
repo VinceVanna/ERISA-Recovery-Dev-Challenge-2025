@@ -1,9 +1,8 @@
 <div class="flex gap-4">
-  <!-- Table Container -->
-  <div class="w-[1150px] h-[600px] overflow-auto border rounded shadow">
+  <div class="w-[1150px] h-[550px] overflow-auto border rounded shadow ml-3 mt-3">
     <table class="table-auto min-w-full">
       <thead>
-        <tr class="bg-gray-100">
+        <tr>
           <th class="sticky top-0 bg-gray-100 px-4 py-2 text-left z-10">ID</th>
           <th class="sticky top-0 bg-gray-100 px-4 py-2 text-left z-10">Name</th>
           <th class="sticky top-0 bg-gray-100 px-4 py-2 text-left z-10">Billed Amount</th>
@@ -16,7 +15,7 @@
       </thead>
       <tbody>
         {% for claim in claims %}
-        <tr class="border-t">
+        <tr class="border-t bg-white" data-claim-id="{{claim.id}}">
           <td class="px-3 py-2">{{ claim.id }}</td>
           <td class="px-3 py-2">{{ claim.patient_name }}</td>
           <td class="px-3 py-2">{{ claim.billed_amount }}</td>
@@ -26,18 +25,18 @@
           <td class="px-3 py-2">{{ claim.discharge_date }}</td>
           <div class="flex items-center gap-2">
           <td>
-            <button class="viewButton px-3 py-1 rounded">
+            <button class="viewButton px-3 py-1 rounded border-2 border-solid border-black hover:bg-red-100 hover:text-white" data-claim-id="{{claim.id}}">
               <svg class="viewIcon w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9ZM11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12Z" fill="#000000"/>
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M21.83 11.2807C19.542 7.15186 15.8122 5 12 5C8.18777 5 4.45796 7.15186 2.17003 11.2807C1.94637 11.6844 1.94361 12.1821 2.16029 12.5876C4.41183 16.8013 8.1628 19 12 19C15.8372 19 19.5882 16.8013 21.8397 12.5876C22.0564 12.1821 22.0536 11.6844 21.83 11.2807ZM12 17C9.06097 17 6.04052 15.3724 4.09173 11.9487C6.06862 8.59614 9.07319 7 12 7C14.9268 7 17.9314 8.59614 19.9083 11.9487C17.9595 15.3724 14.939 17 12 17Z" fill="#000000"/>
               </svg>
             </button>
-            <button class="flagButton px-3 py-1 rounded" data-claim-id="{{claim.id}}">
+            <button class="flagButton px-3 py-1 rounded border-2 border-solid border-black" data-claim-id="{{claim.id}}">
               <svg class="flagIcon w-5 h-5 transition-colors duration-200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path class="flagPath" d="M5 22V14M5 14V4M5 14L7.47067 13.5059C9.1212 13.1758 10.8321 13.3328 12.3949 13.958C14.0885 14.6354 15.9524 14.7619 17.722 14.3195L17.8221 14.2945C18.4082 14.148 18.6861 13.4769 18.3753 12.9589L16.8147 10.3578C16.4732 9.78863 16.3024 9.50405 16.2619 9.19451C16.2451 9.06539 16.2451 8.93461 16.2619 8.80549C16.3024 8.49595 16.4732 8.21137 16.8147 7.64221L18.0932 5.51132C18.4278 4.9536 17.9211 4.26972 17.2901 4.42746C15.8013 4.79967 14.2331 4.69323 12.8082 4.12329L12.3949 3.95797C10.8321 3.33284 9.1212 3.17576 7.47067 3.50587L5 4M5 4V2" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </button>
-            <button class="noteButton px-3 py-1 rounded">
+            <button class="noteButton px-3 py-1 rounded border-2 border-solid border-black">
               <svg class="noteIcon w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M9.56 18V13" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M12 15.5H7" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -54,8 +53,8 @@
     </table>
   </div>
 
-  <!-- Sidebar or Additional Container -->
-  <div class="flex-1 border rounded shadow p-4">
+
+  <div class="flex-1 border rounded shadow p-4 mr-3 mt-3">
     <h2 class="text-lg font-semibold mb-2">Details Panel</h2>
     <p>Put anything here—filters, charts, claim details, etc.</p>
   </div>
@@ -70,6 +69,22 @@
       const isFlagged = !isCurrentlyRed;
       path.setAttribute('fill', isFlagged ? 'red' : 'none');    
       console.log("Flagged: ", claimId, "Status: ", isFlagged);      
+    });
+  });
+
+  document.querySelectorAll('.viewButton').forEach((button) => {
+    button.addEventListener('click', () => {
+      const claimId = button.getAttribute('data-claim-id')
+
+      document.querySelectorAll(`tr[data-claim-id]`).forEach((row) =>{
+        row.classList.remove("bg-blue-50")
+      });
+
+      const row = document.querySelector(`tr[data-claim-id="${claimId}"]`);
+      if(row){
+        row.classList.toggle("bg-blue-50")
+        console.log("VIEW BUTTON: ", claimId);
+      }
     });
   });
 </script>
