@@ -1,0 +1,22 @@
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Claim ID</th>
+            <th>Denial Reason</th>
+            <th>CPT Codes</th>
+        </tr>
+    </thead>
+        <tbody>
+        {% for detail in claim_detail %}
+
+        <tr>
+            <td>{{detail.id}}</td>
+            <td>{{detail.claim_id.id}}</td>
+            <td>{{detail.denial_reason}}</td>
+            <td>{{detail.cpt_codes}}</td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
