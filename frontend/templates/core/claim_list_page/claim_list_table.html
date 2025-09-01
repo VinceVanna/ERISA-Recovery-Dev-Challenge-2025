@@ -70,8 +70,7 @@
       const path = button.querySelector('.flagPath');
       const isCurrentlyRed = path.getAttribute('fill') === 'red';
       const isFlagged = !isCurrentlyRed;
-      path.setAttribute('fill', isFlagged ? 'red' : 'none');    
-      console.log("Flagged: ", claimId, "Status: ", isFlagged);      
+      path.setAttribute('fill', isFlagged ? 'red' : 'none');       
     });
   });
 
@@ -86,7 +85,6 @@
       const row = document.querySelector(`tr[data-claim-id="${claimId}"]`);
       if(row){
         row.classList.toggle("bg-blue-50")
-        console.log("VIEW BUTTON: ", claimId);
       }
     });
   });
