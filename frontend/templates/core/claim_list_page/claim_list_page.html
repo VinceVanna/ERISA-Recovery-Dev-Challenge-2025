@@ -2,9 +2,26 @@
 
 {% block content %}
 <div 
+    hx-get="/navbar/"
+    hx-trigger="load"
+    hx-swap="innerHTML"
+    id="navbar_container"
+    ></div>
+
+    {% if request.GET.search %}
+<div 
+    hx-get="/load_claim_list/?search={{request.GET.search}}"
+    hx-trigger="load"
+    hx-swap="innerHTML"
+    id="response_claim"
+    ></div>
+    {% else %}
+<div 
     hx-get="/load_claim_list/"
     hx-trigger="load"
     hx-swap="innerHTML"
     id="response_claim"
     ></div>
+
+    {% endif %}
 {% endblock %}

@@ -4,4 +4,6 @@
     <p>Claim ID: {{detail.claim_id.id}}</p>
     <p>Denial Reason: {{detail.denial_reason}}</p>
     <p>CPT Codes: {{detail.cpt_codes}}</p>
+    <p>Name: {{claim.patient_name}}</p>
+    <div class="claim-loaded-marker" hidden data-claim-id="{{ claim.id }}" data-patient-name="{{ claim.patient_name }}"></div>      
 </div>

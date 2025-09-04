@@ -1,0 +1,24 @@
+<nav class="bg-white border-b px-4 py-2 flex items-center justify-between">
+
+  <div class="text-xl font-bold text-gray-800">ERISA Challenge App</div>
+
+  <div class="hidden md:flex space-x-4">
+    <a href="#" class="text-gray-600 hover:text-blue-600">Home</a>
+    <a href="#" class="text-gray-600 hover:text-blue-600">About</a>
+    <a href="#" class="text-gray-600 hover:text-blue-600">Contact</a>
+  </div>
+
+  <div class="relative">
+    <input
+      type="text"
+      placeholder="Search..."
+      name="search"
+      hx-get="/load_claim_list"
+      hx-target="#response_claim"
+      hx-trigger="keyup change delay:300ms"
+      hx-push-url="false"
+      hx-params="*"
+      class="pl-4 pr-10 py-1 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+</nav>
