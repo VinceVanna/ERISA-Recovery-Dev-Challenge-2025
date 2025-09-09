@@ -1,7 +1,7 @@
 <div x-data>
   <div class="flex gap-4">
     <div class="w-[1150px] h-[550px] overflow-auto border rounded shadow ml-3 mt-3">
-      <table class="table-auto min-w-full">
+      <table class="table-auto min-w-full"> 
         <thead>
           <tr>
             <th class="sticky top-0 bg-gray-100 px-4 py-2 text-left">ID</th>
@@ -120,6 +120,21 @@ document.body.addEventListener('htmx:afterSwap', (e) => {
       }
   }
 });
+
+document.body.addEventListener('htmx:beforeRequest', (e) => {
+  const target = e.detail.elt;
+
+  // Only clear state if the request is coming from the search bar
+  if (target.matches('input[name="search"], form.search-form')) {
+    Alpine.store('claimState').selectedClaimID = null;
+    Alpine.store('claimState').selectedPatientName = '';
+    
+    // Optional: clear detail panel
+    const detailPanel = document.querySelector('#detail_response');
+    if (detailPanel) detailPanel.innerHTML = '';
+  }
+});
+
 
 
 </script>

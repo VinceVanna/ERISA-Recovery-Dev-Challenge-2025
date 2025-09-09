@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<div 
+    hx-get="/navbar/"
+    hx-trigger="load"
+    hx-swap="innerHTML"
+    id="navbar_container"
+    >
+</div>
+
+<div
+    hx-get="/register_card/"
+    hx-trigger="load"
+    hx-swap="innerHTML"
+    id="register_card"
+    >
+</div>
+
+{% endblock %}

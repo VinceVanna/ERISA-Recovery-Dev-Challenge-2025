@@ -1,0 +1,27 @@
+<div class="flex items-center justify-center h-screen bg-gray-100">
+  <div class="bg-white shadow-lg rounded-lg p-6 w-96">
+    <h2>New Employee</h2>
+    <form
+        hx-post="/create_employee/"
+        hx-target="#form-response"
+        hx-swap="innerHTML"
+    >
+        <label>Username</label>
+        <input type="text" name="username" placeholder="ex. Username"/>
+        <label>First Name</label>
+        <input type="text" name="first_name" placeholder="ex. First Name"/>
+        <label>Last Name</label>
+        <input type="text" name="last_name" placeholder="ex. Last Name"/>
+        <label>Password</label>
+        <input type="password" name="password" placeholder="ex. Password"/>
+        <label>Employee Type</label>
+        <select type="select" name="employee_type">
+            <option>Employee</option>
+            <option>Admin</option>
+        </select>
+        <button type="submit" class="border-2 border-solid border-black rounded">Create New Employee</button>
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    </form>
+    <div id="form-response"></div>
+  </div>
+</div>

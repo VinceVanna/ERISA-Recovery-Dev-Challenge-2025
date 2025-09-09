@@ -21,6 +21,7 @@ class ClaimDetail(models.Model):
         return f"ID: {self.id} - Claim ID: {self.claim_id}"
     
 class Employee(models.Model):
+    employee_username = models.CharField(max_length=255, unique=True)
     employee_first_name = models.CharField(max_length=255)
     employee_last_name = models.CharField(max_length=255)
     employee_password = models.CharField(max_length=255, null=True, blank=True)
