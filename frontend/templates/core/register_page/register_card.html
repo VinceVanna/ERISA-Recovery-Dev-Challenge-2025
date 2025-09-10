@@ -3,7 +3,7 @@
     <h2>New Employee</h2>
     <form
         hx-post="/create_employee/"
-        hx-target="#form-response"
+        hx-target="#register-form-response"
         hx-swap="innerHTML"
     >
         <label>Username</label>
@@ -22,6 +22,6 @@
         <button type="submit" class="border-2 border-solid border-black rounded">Create New Employee</button>
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
     </form>
-    <div id="form-response"></div>
+    <div id="register-form-response"></div>
   </div>
 </div>

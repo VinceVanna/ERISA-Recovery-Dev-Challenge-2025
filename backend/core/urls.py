@@ -12,5 +12,8 @@ urlpatterns = [
     path('login_card/', views.load_login_card, name='login_card'),
     path('register_card/', views.load_register_card, name='register_card'),
     path('register/', views.register_page, name='register'),
-    path('create_employee/', views.create_employee, name='create_employee')
+    path('create_employee/', views.create_employee, name='create_employee'),
+    path('employee_login/', views.employee_login, name='employee_login'),
+    path('employee_logout/', views.employee_logout, name='employee_logout'),
+    path('toggle_flag/<int:claim_id>/', views.toggle_flag, name='toggle_flag')
 ]

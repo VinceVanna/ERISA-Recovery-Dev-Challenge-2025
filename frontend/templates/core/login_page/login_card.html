@@ -1,12 +1,18 @@
 <div class="flex items-center justify-center h-screen bg-gray-100">
   <div class="bg-white shadow-lg rounded-lg p-6 w-96">
     <h2>Login</h2>
-    <form>
+    <form
+        hx-post="/employee_login/"
+        hx-target="#login-form-response"
+        hx-swap="innerHTML">
         <label>Username</label>
-        <input placeholder="ex. Enter Username"/>
+        <input type="text" name="username" placeholder="ex. Enter Username"/>
         <label>Password</label>
-        <input placeholder="ex. Enter Password" type="password"/>
-        <button>Login</button>
+        <input type="password" name="password" placeholder="ex. Enter Password" />
+        <button type="submit">Login</button>
+        
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
     </form>
+    <div id="login-form-response"></div>
   </div>
 </div>

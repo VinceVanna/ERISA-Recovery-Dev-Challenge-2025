@@ -2,13 +2,9 @@
 
   <div class="text-xl font-bold text-gray-800">ERISA Challenge App</div>
 
-  <div class="hidden md:flex space-x-4">
-    <a href="#" class="text-gray-600 hover:text-blue-600">Home</a>
-    <a href="#" class="text-gray-600 hover:text-blue-600">About</a>
-    <a href="#" class="text-gray-600 hover:text-blue-600">Contact</a>
-  </div>
-
-  <div class="relative">
+    {% if request.session.employee_id %}
+      <a href="/claim_list/" class="text-gray-600 hover:text-blue-600">Dashboard</a>
+        <div class="relative">
     <input
       type="text"
       placeholder="Search..."
@@ -21,4 +17,8 @@
       class="pl-4 pr-10 py-1 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
   </div>
+      <a href="/employee_logout/" class="text-gray-600 hover:text-red-600 border-2 border-black">Logout</a>
+    {% else %}
+      <a href="" class="text-gray-600 hover:text-green-600 border-2 border-black">Login</a>
+    {% endif %}
 </nav>

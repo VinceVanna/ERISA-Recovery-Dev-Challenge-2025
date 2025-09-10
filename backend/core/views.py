@@ -1,16 +1,22 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
-from .models import ClaimList, ClaimDetail, Employee
+from django.http import HttpResponse, JsonResponse
+from .models import ClaimList, ClaimDetail, Employee, Flag
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password, make_password
 
 # Create your views here.
 def load_claim_list(request):
+    employee_id = request.session.get('employee_id')
     query = request.GET.get('search','')
     get_all_claims = ClaimList.objects.filter(
         Q(id__icontains=query) | Q(patient_name__icontains=query)
     )
-    return render(request, 'core/claim_list_page/claim_list_table.html', {'claims': get_all_claims})
+
+    get_all_flagged = set(
+        Flag.objects.filter(employee_id=employee_id).values_list('claim_id', flat=True)
+    )
+
+    return render(request, 'core/claim_list_page/claim_list_table.html', {'claims': get_all_claims, 'flagged': get_all_flagged})
 
 def display_claim_list(request):
     return render(request, 'core/claim_list_page/claim_list_page.html')
@@ -47,20 +53,27 @@ def register_page(request):
     return render(request, 'core/register_page/register_page.html')
 
 def employee_login(request):
-    if request == "POST":
+    if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
 
         try:
-            employee = Employee.objects.get(username=username)
+            employee = Employee.objects.get(employee_username=username)
 
-            if check_password(password, employee.password):
+            if check_password(password, employee.employee_password):
                 request.session['employee_id'] = employee.id
-                return HttpResponse('<script>window.location.href="/claim_list/";</script>')
+                response = HttpResponse()
+                response['HX-Redirect'] = '/claim_list/'
+                return response
             else:
-                return HttpResponse("Invalid Password", status=401)
+                return HttpResponse("Invalid Password")
         except Employee.DoesNotExist:
-            return HttpResponse("Employee Not found or wrong username or password", status=401)
+            return HttpResponse("Employee Not found or wrong username or password")
+    return load_claim_list(request)
+
+def employee_logout(request):
+    if 'employee_id' in request.session:
+        del request.session['employee_id']
     return login_page(request)
 
 def create_employee(request):
@@ -83,3 +96,23 @@ def create_employee(request):
         )
         return HttpResponse('<div class="text-green-600 font-semibold">New User Created!</div>')
     return register_page(request)
+
+
+def toggle_flag(request, claim_id):
+    employee_id = request.session.get('employee_id')
+
+    if not employee_id:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+    try:
+        employee = Employee.objects.get(id=employee_id)
+        claim = ClaimList.objects.get(id=claim_id)
+    except Employee.DoesNotExist:
+        return JsonResponse({'error': 'Employee not found'}, status=404)
+    except ClaimList.DoesNotExist:
+        return JsonResponse({'error': 'Claim not found'}, status=404)
+
+    flag, created = Flag.objects.get_or_create(claim_id=claim, employee_id=employee)
+    if not created:
+        flag.delete()
+        return JsonResponse({'flagged': False})
+    return JsonResponse({'flagged': True})

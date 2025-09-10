@@ -34,7 +34,7 @@ class Employee(models.Model):
     
 class Note(models.Model):
     claim_id = models.ForeignKey(ClaimList, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -44,7 +44,7 @@ class Note(models.Model):
     
 class Annotation(models.Model):
     claim_id = models.ForeignKey(ClaimList, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -54,13 +54,12 @@ class Annotation(models.Model):
     
 class Flag(models.Model):
     claim_id = models.ForeignKey(ClaimList, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    flag = models.BooleanField(default=False)
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('claim_id', 'user_id')
+        unique_together = ('claim_id', 'employee_id')
 
     def __str__(self):
         return f"ID: {self.id} - Claim ID: {self.claim_id} - User ID: {self.claim_id}"
