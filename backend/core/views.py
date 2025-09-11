@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
-from .models import ClaimList, ClaimDetail, Employee, Flag, Annotation
+from .models import ClaimList, ClaimDetail, Employee, Flag, Annotation, Note
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password, make_password
 
@@ -39,7 +39,9 @@ def search_claim_detail(request, claim_id):
     return render(request, 'core/claim_list_page/claim_detail_tab.html', context)
 
 def load_navbar(request):
-    return render(request, 'core/navbar.html')
+    page_context = request.headers.get('X-Page', '')
+    show_search = page_context == 'claim_list'
+    return render(request, 'core/navbar.html', {'show': show_search})
 
 def load_login_card(request):
     return render(request, 'core/login_page/login_card.html')
@@ -64,6 +66,7 @@ def employee_login(request):
             if check_password(password, employee.employee_password):
                 request.session['employee_id'] = employee.id
                 request.session['employee_type'] = employee.employee_type
+                request.session['employee_name'] = employee.employee_first_name + " " + employee.employee_last_name
                 response = HttpResponse()
                 response['HX-Redirect'] = '/claim_list/'
                 return response
@@ -100,7 +103,6 @@ def create_employee(request):
         return HttpResponse('<div class="text-green-600 font-semibold">New User Created!</div>')
     return register_page(request)
 
-
 def toggle_flag(request, claim_id):
     employee_id = request.session.get('employee_id')
 
@@ -125,8 +127,6 @@ def save_annotation(request):
     employee_id = request.POST.get("selectedEmployeeID")
     content=request.POST.get("annotationContent")
 
-    print(f"{claim_id} {employee_id} {content}")
-
     try:
         claim = ClaimList.objects.get(id=claim_id)
         employee = Employee.objects.get(id=employee_id)
@@ -135,7 +135,6 @@ def save_annotation(request):
     except Employee.DoesNotExist:
         return JsonResponse({"error": "Employee not found"}, status=404)
 
-
     annotation, created = Annotation.objects.update_or_create(
         claim_id=claim,
         employee_id = employee,
@@ -143,7 +142,6 @@ def save_annotation(request):
             "content": content
         }
     )
-
     return JsonResponse({"success": True, "action": "updated"})
 
 def get_annotation(request, claim_id):
@@ -154,4 +152,81 @@ def get_annotation(request, claim_id):
         return JsonResponse({'annotation': annotation.content})
     except Annotation.DoesNotExist:
         return JsonResponse({'annotation': ""})
+    
+def save_note(request):
+    claim_id = request.POST.get("selectedClaimID")
+    employee_id = request.POST.get("selectedEmployeeID")
+    content = request.POST.get("noteContent")
 
+    try:
+        claim = ClaimList.objects.get(id=claim_id)
+        employee = Employee.objects.get(id=employee_id)
+    except ClaimList.DoesNotExist:
+        return JsonResponse({"error": "Claim not found"}, status=404)
+    except Employee.DoesNotExist:
+        return JsonResponse({"error": "Employee not found"}, status=404)
+    
+    note, created = Note.objects.update_or_create(
+        claim_id=claim,
+        employee_id=employee,
+        defaults={
+            "content": content
+        }
+    )
+    return JsonResponse({"success": True, "action": "updated"})
+        
+def get_note(request, claim_id):
+    employee_id = request.session.get('employee_id')
+
+    try:
+        note = Note.objects.get(claim_id=claim_id, employee_id=employee_id)
+        return JsonResponse({'note': note.content})
+    except Note.DoesNotExist:
+        return JsonResponse({'note': ''})
+
+def get_employee(request):
+    query = request.GET.get('search', '')
+    get_all_employees = Employee.objects.filter(
+        Q(id__icontains=query) | Q(employee_username__icontains=query)
+    )
+    return render(request, 'core/admin_page/employee_function/employee_table.html', {'employees': get_all_employees})
+
+def display_employee(request):
+    return render(request, 'core/admin_page/employee_function/display_employee.html')
+
+def get_all_note(request):
+    get_all_notes = Note.objects.all()
+    return render(request, 'core/admin_page/note_function/note_table.html', {'notes': get_all_notes})
+
+def display_note(request):
+    return render(request, 'core/admin_page/note_function/display_note.html')
+
+def get_all_annotation(request):
+    get_all_annotations = Annotation.objects.all()
+    return render(request, 'core/admin_page/annotation_function/annotation_table.html', {'annotations': get_all_annotations})
+
+def display_annotation(request):
+    return render(request, 'core/admin_page/annotation_function/display_annotation.html')
+
+def get_all_flag(request):
+    get_all_flags = Flag.objects.all()
+    return render(request, 'core/admin_page/flag_function/flag_table.html', {'flags': get_all_flags})
+
+def display_flag(request):
+    return render(request, 'core/admin_page/flag_function/display_flag.html')
+
+def count_flagged(request):
+    flag_count = len(Flag.objects.all())
+    return render(request, 'core/admin_page/dashboard/display_flagged.html', {'totalFlagged': flag_count})
+
+def get_underpayment(request):
+    get_all_claim = ClaimList.objects.all()
+    underpayment = 0
+    for claim in get_all_claim:
+        billed = claim.billed_amount or 0
+        paid = claim.paid_amount or 0
+        underpayment += billed - paid
+    return render(request, 'core/admin_page/dashboard/display_underpayment.html', {'underpayment': float(underpayment)})
+
+def load_dashboard(request):
+    return render(request, 'core/admin_page/dashboard/dashboard.html')

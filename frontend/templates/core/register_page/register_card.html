@@ -1,25 +1,30 @@
 <div class="flex items-center justify-center h-screen bg-gray-100">
   <div class="bg-white shadow-lg rounded-lg p-6 w-96">
-    <h2>New Employee</h2>
     <form
         hx-post="/create_employee/"
         hx-target="#register-form-response"
         hx-swap="innerHTML"
     >
-        <label>Username</label>
-        <input type="text" name="username" placeholder="ex. Username"/>
-        <label>First Name</label>
-        <input type="text" name="first_name" placeholder="ex. First Name"/>
-        <label>Last Name</label>
-        <input type="text" name="last_name" placeholder="ex. Last Name"/>
-        <label>Password</label>
-        <input type="password" name="password" placeholder="ex. Password"/>
-        <label>Employee Type</label>
-        <select type="select" name="employee_type">
+          <div class="flex items-center justify-between">
+            <label class="w-1/2 text-right pr-4">Username</label>
+            <input type="text" name="username" placeholder="ex. Username" class="w-1/2 border rounded px-2 py-1"/>
+          </div>
+          <div class="flex items-center justify-between"><label class="w-1/2 text-right pr-4">First Name</label>
+        <input type="text" name="first_name" placeholder="ex. First Name" class="w-1/2 border rounded px-2 py-1"/></div>
+        
+        <div class="flex items-center justify-between"><label class="w-1/2 text-right pr-4">Last Name</label>
+        <input type="text" name="last_name" placeholder="ex. Last Name" class="w-1/2 border rounded px-2 py-1"/></div>
+        
+        <div class="flex items-center justify-between"><label class="w-1/2 text-right pr-4">Password</label>
+        <input type="password" name="password" placeholder="ex. Password" class="w-1/2 border rounded px-2 py-1"/></div>
+        
+        <div class="flex items-center justify-between"><label class="w-1/2 text-right pr-4">Employee Type</label>
+        <select type="select" name="employee_type" class="w-1/2 border rounded px-2 py-1">
             <option>Employee</option>
             <option>Admin</option>
-        </select>
-        <button type="submit" class="border-2 border-solid border-black rounded">Create New Employee</button>
+        </select></div>
+        <div class="flex justify-center pt-4"><button type="submit" class="border-2 border-black rounded px-4 py-2 hover:bg-gray-100">Create New Employee</button></div>
+        
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
     </form>
     <div id="register-form-response"></div>

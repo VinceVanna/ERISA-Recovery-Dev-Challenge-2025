@@ -24,7 +24,6 @@
             <td class="px-3 py-2">{{ claim.status }}</td>
             <td class="px-3 py-2">{{ claim.insurer_name }}</td>
             <td class="px-3 py-2">{{ claim.discharge_date }}</td>
-            
             <td>
               <div class="flex items-center gap-2">
                 <button class="viewButton note-marker px-3 py-1 rounded border-2 border-solid border-black hover:bg-red-100" 
@@ -57,7 +56,6 @@
                 </button>
               </div>
             </td>
-            
           </tr>
           {% endfor %}
         </tbody>
@@ -68,78 +66,98 @@
       <h2 class="text-lg font-semibold mb-2">Details Panel</h2>
       <div id="detail_response"></div>
     </div>
-
   </div>
 
   <div class="flex gap-4 mt-4" x-show="$store.claimState.selectedClaimID !== null"
       x-init="$watch('$store.claimState.selectedClaimID', async (id) => {
       if (id) {
-        const res = await fetch(`/get_annotation/${id}/`, {
+        const responseNote = await fetch(`/get_note/${id}/`,{
           headers: { 'HX-Request': 'true' }
         });
-        const data = await res.json();
-        $store.claimState.annotationContent = data.annotation || '';
+        const dataNote = await responseNote.json();
+        $store.claimState.noteContent = dataNote.note || '';
+
+        const responseAnnotation = await fetch(`/get_annotation/${id}/`, {
+          headers: { 'HX-Request': 'true' }
+        });
+        const dataAnnotation = await responseAnnotation.json();
+        $store.claimState.annotationContent = dataAnnotation.annotation || '';
       }
     })
   "
   >
-    <div class="flex-1 border rounded shadow p-4 ml-3">
+    <div class="flex-1 border rounded shadow p-4 ml-3" x-data="{isEditingNote: false}">
+      <form
+        hx-post="/save_note/"
+        hx-params="*"
+        hx-trigger="submit"
+        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+        hx-swap="none"
+      >
       <div class="flex items-center justify-between mb-2">
         <h2 class="text-lg font-semibold">Notes - Claim ID: <span x-text="$store.claimState.selectedClaimID"></span> - Patient: <span x-text="$store.claimState.selectedPatientName"></span></h2>
-        <div class="flex gap-2">
-          <button class="px-3 py-1 rounded border-2 border-solid border-black hover:bg-green-500 transition-colors duration-200">Save</button>
-          <button class="px-3 py-1 rounded border-2 border-solid border-black">Edit</button>
-        </div>
-      </div>
-      <textarea class="w-full h-32 p-2 border rounded resize-none" placeholder="Enter notes here..."></textarea>
-    </div>
-
-    <div class="flex-1 border rounded shadow p-4 ml-3" x-data="{isEditing: false}">
-          <form
-      hx-post="/save_annotation/"
-      hx-params="*"
-      hx-trigger="submit"
-      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-      hx-swap="none"
-    >
-      <div class="flex items-center justify-between mb-2">
-        <h2 class="text-lg font-semibold">Annotations - Claim ID: <span x-text="$store.claimState.selectedClaimID"></span> - Patient: <span x-text="$store.claimState.selectedPatientName"></span></h2>
-        <div class="flex gap-2">
-                  <button class="px-3 py-1 rounded border-2 border-solid border-black"
-                  type="button"
-            x-show="!isEditing"
-            @click="isEditing = true"
+          <button 
+            class="px-3 py-1 rounded border-2 border-solid border-black hover:bg-green-500 transition-colors duration-200"
+            type="button"
+            x-show="!isEditingNote"
+            @click="isEditingNote = true"
           >Edit</button>
-
-          <button class="px-3 py-1 rounded border-2 border-solid border-black hover:bg-green-500 transition-colors duration-200"
-            x-show="isEditing"
-            @click="
-              isEditing = false;
-            "
+          <button 
+            class="px-3 py-1 rounded border-2 border-solid border-black"
+            x-show="isEditingNote"
             type="submit"
+            @click="isEditingNote = false"
           >Save</button>
       </div>
-      <textarea class="w-full h-32 p-2 border rounded resize-none" placeholder="Enter annotations here..."
-        :readonly="!isEditing"
+      <textarea class="w-full h-32 p-2 border rounded resize-none" placeholder="Enter notes here..."
+        :readonly="!isEditingNote"
+        name="noteContent"
+        x-model="$store.claimState.noteContent"
+      ></textarea>
+      <input type="hidden" name="selectedClaimID" :value="$store.claimState.selectedClaimID">
+      <input type="hidden" name="selectedEmployeeID" :value="$store.claimState.selectedEmployeeID">
+      <input type="hidden" name="noteContent" :value="$store.claimState.noteContent">
+      </form>
+    </div>
+
+    <div class="flex-1 border rounded shadow p-4 ml-3" x-data="{isEditingAnnotation: false}">
+      <form
+        hx-post="/save_annotation/"
+        hx-params="*"
+        hx-trigger="submit"
+        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+        hx-swap="none"
+      >
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-lg font-semibold">Annotations - Claim ID: <span x-text="$store.claimState.selectedClaimID"></span> - Patient: <span x-text="$store.claimState.selectedPatientName"></span></h2>
+          <button 
+            class="px-3 py-1 rounded border-2 border-solid border-black"
+            type="button"
+            x-show="!isEditingAnnotation"
+            @click="isEditingAnnotation = true"
+          >Edit
+          </button>
+          <button 
+            class="px-3 py-1 rounded border-2 border-solid border-black hover:bg-green-500 transition-colors duration-200"
+            x-show="isEditingAnnotation"
+            type="submit"
+            @click="isEditingAnnotation = false;"
+          >Save
+          </button>
+      </div>
+      <textarea 
+        class="w-full h-32 p-2 border rounded resize-none" placeholder="Enter annotations here..."
+        :readonly="!isEditingAnnotation"
         name="annotationContent"
         x-model="$store.claimState.annotationContent"
       ></textarea>
-
       <input type="hidden" name="selectedClaimID" :value="$store.claimState.selectedClaimID">
       <input type="hidden" name="selectedEmployeeID" :value="$store.claimState.selectedEmployeeID">
       <input type="hidden" name="annotationContent" :value="$store.claimState.annotationContent">
-
-    </form>
+      </form>
     </div>
-
   </div>
-
-
-
 </div>
-
-
-
 
 <script>
 document.body.addEventListener("htmx:afterRequest", function (event) {
@@ -182,18 +200,11 @@ document.body.addEventListener('htmx:afterSwap', (e) => {
 
 document.body.addEventListener('htmx:beforeRequest', (e) => {
   const target = e.detail.elt;
-
-  // Only clear state if the request is coming from the search bar
   if (target.matches('input[name="search"], form.search-form')) {
     Alpine.store('claimState').selectedClaimID = null;
     Alpine.store('claimState').selectedPatientName = '';
-    
-    // Optional: clear detail panel
     const detailPanel = document.querySelector('#detail_response');
     if (detailPanel) detailPanel.innerHTML = '';
   }
 });
-
-
-
 </script>

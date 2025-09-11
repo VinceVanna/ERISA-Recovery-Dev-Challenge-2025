@@ -1,0 +1,25 @@
+
+<div class="flex gap-4">
+    <div class="w-[1500px] h-[550px] overflow-auto border rounded shadow ml-3 mt-3">
+      <table class="table-auto min-w-full">
+        <thead>
+            <tr>
+                <td class="sticky top-0 bg-gray-100 px-4 py-2 text-left">Username</td>
+                <td class="sticky top-0 bg-gray-100 px-4 py-2 text-left">First Name</td>
+                <td class="sticky top-0 bg-gray-100 px-4 py-2 text-left">Last Name</td>
+                <td class="sticky top-0 bg-gray-100 px-4 py-2 text-left">Employee Type</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr class="border-t bg-white">
+                    <td class="px-3 py-2">{{employee.employee_username}}</td>
+                    <td class="px-3 py-2">{{employee.employee_first_name}}</td>
+                    <td class="px-3 py-2">{{employee.employee_last_name}}</td>
+                    <td class="px-3 py-2">{{employee.employee_type}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>

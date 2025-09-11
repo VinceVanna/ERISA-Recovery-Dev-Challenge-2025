@@ -1,0 +1,18 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div 
+    hx-get="/navbar/"
+    hx-trigger="load"
+    hx-swap="innerHTML"
+    id="navbar_container"
+    >
+</div>
+
+<div 
+    hx-get="/get_annotation/"
+    hx-trigger="load"
+    hx-swap="innerHTML"
+    id="response_annotation"
+    ></div>
+{% endblock %}
