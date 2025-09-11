@@ -10,7 +10,7 @@
   * SQLite
 
 # Installition
-  * Must have Python Version: 3.9.13
+  * Must have Python Version: 3.9.13+
   * Code Editor: VSCode
   1. ls (Show which directories are accessible
   2. cd into working directory ```cd ERISA-Recovery-Dev-Challenge-2025-main``` (Or the file before you have access to ./backend/ or ./frontend/)
