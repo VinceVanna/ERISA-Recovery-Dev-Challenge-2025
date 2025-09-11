@@ -4,6 +4,9 @@
 
     {% if request.session.employee_id %}
       <a href="/claim_list/" class="text-gray-600 hover:text-blue-600">Dashboard</a>
+      {% if request.session.employee_type == 'Admin' %}
+      <a href="/register/" class="text-gray-600 hover:text-blue-600">Add Employee</a>
+      {% endif %}
         <div class="relative">
     <input
       type="text"
@@ -20,5 +23,6 @@
       <a href="/employee_logout/" class="text-gray-600 hover:text-red-600 border-2 border-black">Logout</a>
     {% else %}
       <a href="" class="text-gray-600 hover:text-green-600 border-2 border-black">Login</a>
+      
     {% endif %}
 </nav>

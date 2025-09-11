@@ -6,6 +6,9 @@
                 Alpine.store('claimState', {
                     selectedClaimID: null,
                     selectedPatientName: null,
+                    annotationContent: '',
+                    annotationID: null,
+                    selectedEmployeeID: {{ employee_id|default:"null" }},
                 });
             });
         </script>

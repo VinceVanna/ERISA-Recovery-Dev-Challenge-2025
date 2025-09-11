@@ -71,49 +71,87 @@
 
   </div>
 
-<div class="flex gap-4 mt-4" x-show="$store.claimState.selectedClaimID !== null">
-  <div class="flex-1 border rounded shadow p-4 ml-3">
-    <div class="flex items-center justify-between mb-2">
-      <h2 class="text-lg font-semibold">Notes - Claim ID: <span x-text="$store.claimState.selectedClaimID"></span> - Patient: <span x-text="$store.claimState.selectedPatientName"></span></h2>
-      <div class="flex gap-2">
-        <button class="px-3 py-1 rounded border-2 border-solid border-black hover:bg-green-500 transition-colors duration-200">Save</button>
-        <button class="px-3 py-1 rounded border-2 border-solid border-black">Edit</button>
-      </div>
-    </div>
-    <textarea class="w-full h-32 p-2 border rounded resize-none" placeholder="Enter notes here..."></textarea>
-  </div>
-
+  <div class="flex gap-4 mt-4" x-show="$store.claimState.selectedClaimID !== null"
+      x-init="$watch('$store.claimState.selectedClaimID', async (id) => {
+      if (id) {
+        const res = await fetch(`/get_annotation/${id}/`, {
+          headers: { 'HX-Request': 'true' }
+        });
+        const data = await res.json();
+        $store.claimState.annotationContent = data.annotation || '';
+      }
+    })
+  "
+  >
     <div class="flex-1 border rounded shadow p-4 ml-3">
-    <div class="flex items-center justify-between mb-2">
-      <h2 class="text-lg font-semibold">Anotations - Claim ID: <span x-text="$store.claimState.selectedClaimID"></span> - Patient: <span x-text="$store.claimState.selectedPatientName"></span></h2>
-      <div class="flex gap-2">
-        <button class="px-3 py-1 rounded border-2 border-solid border-black hover:bg-green-500 transition-colors duration-200">Save</button>
-        <button class="px-3 py-1 rounded border-2 border-solid border-black">Edit</button>
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-lg font-semibold">Notes - Claim ID: <span x-text="$store.claimState.selectedClaimID"></span> - Patient: <span x-text="$store.claimState.selectedPatientName"></span></h2>
+        <div class="flex gap-2">
+          <button class="px-3 py-1 rounded border-2 border-solid border-black hover:bg-green-500 transition-colors duration-200">Save</button>
+          <button class="px-3 py-1 rounded border-2 border-solid border-black">Edit</button>
+        </div>
       </div>
+      <textarea class="w-full h-32 p-2 border rounded resize-none" placeholder="Enter notes here..."></textarea>
     </div>
-    <textarea class="w-full h-32 p-2 border rounded resize-none" placeholder="Enter annotations here..."></textarea>
+
+    <div class="flex-1 border rounded shadow p-4 ml-3" x-data="{isEditing: false}">
+          <form
+      hx-post="/save_annotation/"
+      hx-params="*"
+      hx-trigger="submit"
+      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+      hx-swap="none"
+    >
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-lg font-semibold">Annotations - Claim ID: <span x-text="$store.claimState.selectedClaimID"></span> - Patient: <span x-text="$store.claimState.selectedPatientName"></span></h2>
+        <div class="flex gap-2">
+                  <button class="px-3 py-1 rounded border-2 border-solid border-black"
+                  type="button"
+            x-show="!isEditing"
+            @click="isEditing = true"
+          >Edit</button>
+
+          <button class="px-3 py-1 rounded border-2 border-solid border-black hover:bg-green-500 transition-colors duration-200"
+            x-show="isEditing"
+            @click="
+              isEditing = false;
+            "
+            type="submit"
+          >Save</button>
+      </div>
+      <textarea class="w-full h-32 p-2 border rounded resize-none" placeholder="Enter annotations here..."
+        :readonly="!isEditing"
+        name="annotationContent"
+        x-model="$store.claimState.annotationContent"
+      ></textarea>
+
+      <input type="hidden" name="selectedClaimID" :value="$store.claimState.selectedClaimID">
+      <input type="hidden" name="selectedEmployeeID" :value="$store.claimState.selectedEmployeeID">
+      <input type="hidden" name="annotationContent" :value="$store.claimState.annotationContent">
+
+    </form>
+    </div>
+
   </div>
-</div>
 
 
 
 </div>
-</div>
+
 
 
 
 <script>
 document.body.addEventListener("htmx:afterRequest", function (event) {
+  const requestURL = event.detail.xhr.responseURL;
+  if (!requestURL.includes("/toggle_flag/")) return;
+
   const button = event.detail.elt;
   const svg = button.querySelector("svg.flagIcon");
   const path = svg?.querySelector(".flagPath");
 
   try {
-    console.log("AHAHAHAH")
     const data = JSON.parse(event.detail.xhr.responseText);
-
-    
-
     if (path) {
       path.style.fill = data.flagged ? "red" : "none";
     }

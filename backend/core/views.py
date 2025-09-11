@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
-from .models import ClaimList, ClaimDetail, Employee, Flag
+from .models import ClaimList, ClaimDetail, Employee, Flag, Annotation
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password, make_password
 
@@ -19,7 +19,8 @@ def load_claim_list(request):
     return render(request, 'core/claim_list_page/claim_list_table.html', {'claims': get_all_claims, 'flagged': get_all_flagged})
 
 def display_claim_list(request):
-    return render(request, 'core/claim_list_page/claim_list_page.html')
+    employee_id = request.session.get('employee_id')
+    return render(request, 'core/claim_list_page/claim_list_page.html', {'employee_id': employee_id})
 
 def load_claim_detail(request):
     get_all_claim_detail = ClaimDetail.objects.all()
@@ -62,6 +63,7 @@ def employee_login(request):
 
             if check_password(password, employee.employee_password):
                 request.session['employee_id'] = employee.id
+                request.session['employee_type'] = employee.employee_type
                 response = HttpResponse()
                 response['HX-Redirect'] = '/claim_list/'
                 return response
@@ -74,6 +76,7 @@ def employee_login(request):
 def employee_logout(request):
     if 'employee_id' in request.session:
         del request.session['employee_id']
+        del request.session['employee_type']
     return login_page(request)
 
 def create_employee(request):
@@ -116,3 +119,39 @@ def toggle_flag(request, claim_id):
         flag.delete()
         return JsonResponse({'flagged': False})
     return JsonResponse({'flagged': True})
+
+def save_annotation(request):
+    claim_id = request.POST.get("selectedClaimID")
+    employee_id = request.POST.get("selectedEmployeeID")
+    content=request.POST.get("annotationContent")
+
+    print(f"{claim_id} {employee_id} {content}")
+
+    try:
+        claim = ClaimList.objects.get(id=claim_id)
+        employee = Employee.objects.get(id=employee_id)
+    except ClaimList.DoesNotExist:
+        return JsonResponse({"error": "Claim not found"}, status=404)
+    except Employee.DoesNotExist:
+        return JsonResponse({"error": "Employee not found"}, status=404)
+
+
+    annotation, created = Annotation.objects.update_or_create(
+        claim_id=claim,
+        employee_id = employee,
+        defaults={
+            "content": content
+        }
+    )
+
+    return JsonResponse({"success": True, "action": "updated"})
+
+def get_annotation(request, claim_id):
+    employee_id = request.session.get('employee_id')
+
+    try:
+        annotation = Annotation.objects.get(claim_id=claim_id, employee_id=employee_id)
+        return JsonResponse({'annotation': annotation.content})
+    except Annotation.DoesNotExist:
+        return JsonResponse({'annotation': ""})
+

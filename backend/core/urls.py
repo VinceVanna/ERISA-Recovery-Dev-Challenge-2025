@@ -15,5 +15,7 @@ urlpatterns = [
     path('create_employee/', views.create_employee, name='create_employee'),
     path('employee_login/', views.employee_login, name='employee_login'),
     path('employee_logout/', views.employee_logout, name='employee_logout'),
-    path('toggle_flag/<int:claim_id>/', views.toggle_flag, name='toggle_flag')
+    path('toggle_flag/<int:claim_id>/', views.toggle_flag, name='toggle_flag'),
+    path('save_annotation/', views.save_annotation, name="save_annotation"),
+    path('get_annotation/<int:claim_id>/', views.get_annotation, name='get_annotation')
 ]
