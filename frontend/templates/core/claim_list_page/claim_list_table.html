@@ -27,9 +27,9 @@
               {% endif %}
             ">${{ claim.paid_amount }}</td>
             <td class="px-3 py-2
-              {% if claim.status == 'Paid' %}text-green-600 border-green-400/50 bg-green-100
-              {% elif claim.status == 'Under Review' %}text-yellow-600 border-yellow-400/50 bg-yellow-100
-              {% else %}text-red-600 border-red-400/50 bg-red-100
+              {% if claim.status == 'Paid' %}text-emerald-700 border-emerald-400/50 bg-emerald-100
+              {% elif claim.status == 'Under Review' %}text-cyan-700 border-cyan-400/50 bg-cyan-100
+              {% else %}text-rose-700 border-rose-400/50 bg-rose-100
               {% endif %}
             ">{{ claim.status }}</td>
             <td class="px-3 py-2">{{ claim.insurer_name }}</td>
