@@ -54,9 +54,9 @@
   # Superuser & Login Infomation
   ## If data is not cleared
 ```
-        Superuser for SQLite
-        Username: admin
-        Password: DevAdmin12
+      Superuser for SQLite
+       - Username: admin
+       - Password: DevAdmin12
 ```
    * Existing Employees (if data is not cleared)
 
@@ -66,7 +66,7 @@
       - Password: Admin
       Employee
       - Username: Ash
-      - Test1
+      - Password: Test1
 ```
   
    ## Create Superuser
