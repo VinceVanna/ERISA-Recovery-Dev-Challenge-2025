@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("file_path", type=str, help="Path for .csv or .json file.")
-        parser.add_argument("--model", type=str, help="Model name (ex., ClaimList)")
+        parser.add_argument("--model", type=str, help="Model name (ex., ClaimList or ClaimDetail)")
         parser.add_argument("--app", type=str, default='core', help="App label/dir (default: core)")
 
     def handle(self, *args, **options):
@@ -77,7 +77,7 @@ class Command(BaseCommand):
                     updated_count+=1
                     self.stdout.write(self.style.SUCCESS(f"Updated ID: {row['id']}"))
 
-            self.stdout.write(self.style.SUCCESS(f"\IDs Created: {created_count}"))
+            self.stdout.write(self.style.SUCCESS(f"\nIDs Created: {created_count}"))
             self.stdout.write(self.style.SUCCESS(f"IDs Updated: {updated_count}"))
 
     
