@@ -53,20 +53,22 @@
     - Command will only use ClaimList OR ClaimDetail not both
   # Superuser & Login Infomation
   ## If data is not cleared
-    ```
-    Super user
-    User: admin
-    Pass: DevAdmin12
-    ```
+```
+        Super user
+        User: admin
+        Pass: DevAdmin12
+```
    * Existing Employees (if data is not cleared)
-    ```
-    Admin
-    - Username: Leo13
-    - Password: Admin
-    Employee
-    - Username: Ash
-    - Test1
-    ```
+
+```
+      Admin
+      - Username: Leo13
+      - Password: Admin
+      Employee
+      - Username: Ash
+      - Test1
+```
+  
    ## Create Superuser
    * -> ```python manage.py createsuperuser```
    * Enter desired <Username>
