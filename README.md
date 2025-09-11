@@ -58,8 +58,7 @@
     User: admin
     Pass: DevAdmin12
     ```
- 
-    * Existing Employees (if data is not cleared)
+   * Existing Employees (if data is not cleared)
     ```
     Admin
     - Username: Leo13
@@ -76,7 +75,7 @@
    * -> Execute ```python manage.py runserver```
    * -> Open brower ```127.0.0.1:8000/admin/```
 # Database Schema
-![Alt](images/Data_Schema.png)
+![Alt](images/Database_Schema.png)
 # Website Flowchart
 ![Alt](images/Website_Flowchart.png)
 
