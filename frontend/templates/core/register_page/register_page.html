@@ -8,14 +8,22 @@
     hx-swap="innerHTML"
     id="navbar_container"
     >
-</div>
+    </div>
 
 <div
     hx-get="/register_card/"
     hx-trigger="load"
     hx-swap="innerHTML"
     id="register_card"
+    hx-on:error="window.location.href='/'"
     >
-</div>
+    </div>
+<div
+    hx-get="/back_button/"
+    hx-trigger="load"
+    hx-swap="innerHTML"
+    id="response_back_button"
+    hx-on:error="window.location.href='/'"
+    ></div>
 
 {% endblock %}

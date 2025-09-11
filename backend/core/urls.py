@@ -6,7 +6,6 @@ urlpatterns = [
     path('load_claim_list/', views.load_claim_list, name='load_claim_list'),
     path('claim_list/', views.display_claim_list, name='display_claim_list'),
     path('load_claim_detail/', views.load_claim_detail, name='load_claim_detail'),
-    path('claim_detail/', views.display_claim_detail, name='display_claim_detail'),
     path('search_detail/<int:claim_id>/', views.search_claim_detail, name='search_claim_detail'),
     path('navbar/', views.load_navbar, name='navbar'),
     path('login_card/', views.load_login_card, name='login_card'),
@@ -30,5 +29,6 @@ urlpatterns = [
     path('display_annotation/', views.display_annotation, name="load_annotation"),
     path('flag_count/', views.count_flagged, name="flag_count"),
     path('underpayment/', views.get_underpayment, name="underpayment"),
-    path('admin_dashboard/', views.load_dashboard, name="load_dashboard")
+    path('admin_dashboard/', views.load_dashboard, name="load_dashboard"),
+    path('back_button/', views.load_back_button, name ="back_button")
 ]

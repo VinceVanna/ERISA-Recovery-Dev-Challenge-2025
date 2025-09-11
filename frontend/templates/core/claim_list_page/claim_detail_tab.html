@@ -1,9 +1,27 @@
-<div>
-    <h1>Claim Details</h1>
-    <p>ID: {{detail.id}}</p>
-    <p>Claim ID: {{detail.claim_id.id}}</p>
-    <p>Denial Reason: {{detail.denial_reason}}</p>
-    <p>CPT Codes: {{detail.cpt_codes}}</p>
-    <p>Name: {{claim.patient_name}}</p>
-    <div class="claim-loaded-marker" hidden data-claim-id="{{ claim.id }}" data-patient-name="{{ claim.patient_name }}"></div>      
+<div class="w-full h-full bg-white rounded shadow overflow-hidden flex flex-col">
+    <div class="bg-blue-500 text-white px-4 py-2">
+        <h1 class="text-lg font-semibold">
+            Claim Details: {{ detail.claim_id.id }}
+        </h1>
+    </div>
+    <div class="bg-white px-4 py-4 mt-3">
+        <div class="mb-6">
+            <p class="text-xl font-bold font-medium text-black">Patient:</p>
+            <p class="text-base font-light text-gray-1000">{{ claim.patient_name }}</p>
+        </div>
+        <div class="mb-6">
+            <p class="text-xl font-bold font-medium text-black">CPT Codes:</p>
+            {% for code in detail.cpt_codes_list %}
+            <p class="inline-block text-base font-light text-gray-1000 border rounded border-gray-1000 mt-2 px-2 py-1">{{ code }}</p>
+            {% endfor %}
+        </div>
+        <div class="mb-6">
+            <p class="text-xl font-bold font-medium text-black">Denial Reason:</p>
+            <p class="text-base text-red-600">{{ detail.denial_reason }}</p>
+        </div>
+    </div>
+    <div class="claim-loaded-marker" hidden 
+        data-claim-id="{{ claim.id }}" 
+        data-patient-name="{{ claim.patient_name }}">
+    </div>
 </div>

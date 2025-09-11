@@ -1,0 +1,26 @@
+<div class="bg-blue-600 border-b px-4 py-2 flex items-center justify-between">
+  <div class="text-xl font-bold text-white">ERISA Challenge App{% if request.session.employee_name %} | <span>{{request.session.employee_name}}</span>{% endif %}</div>
+    {% if request.session.employee_id %}  
+  <div class="flex gap-4 items-center">
+      <a href="/claim_list/" class="text-white hover:text-green-400">View Claims</a>
+      {% if request.session.employee_type == 'Admin' %}
+        <a href="/admin_dashboard/" class="text-white hover:text-green-400">Dashboard</a>
+      {% endif %}
+      </div>
+        <div class="flex item-center gap-4">
+            <input
+              type="text"
+              placeholder="Search Claims..."
+              name="search"
+              hx-get="/load_claim_list"
+              hx-target="#response_claim"
+              hx-trigger="keyup change delay:300ms"
+              hx-push-url="false"
+              hx-params="*"
+              class="pl-4 pr-10 py-1 rounded-full border border-blue-600 focus:outline-none focus:ring-2 focus:ring-green-300 {% if not show %}invisible{% endif %}"
+            /> 
+          <a href="/employee_logout/" class="border-2 border-red-600 rounded bg-red-600 text-white hover:bg-red-500 hover:border-red-500 px-6 py-1">Logout</a>
+        </div>
+    {% endif %}
+  </div>
+</nav>

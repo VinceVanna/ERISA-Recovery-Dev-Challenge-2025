@@ -14,5 +14,14 @@
     hx-trigger="load"
     hx-swap="innerHTML"
     id="response_employee"
+    hx-on:error="window.location.href='/'"
+    ></div>
+
+<div
+    hx-get="/back_button/"
+    hx-trigger="load"
+    hx-swap="innerHTML"
+    id="response_back_button"
+    hx-on:error="window.location.href='/'"
     ></div>
 {% endblock %}

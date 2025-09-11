@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from .models import ClaimList, ClaimDetail, Employee, Flag, Annotation, Note
 from django.db.models import Q
@@ -6,6 +6,8 @@ from django.contrib.auth.hashers import check_password, make_password
 
 # Create your views here.
 def load_claim_list(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     employee_id = request.session.get('employee_id')
     query = request.GET.get('search','')
     get_all_claims = ClaimList.objects.filter(
@@ -19,19 +21,24 @@ def load_claim_list(request):
     return render(request, 'core/claim_list_page/claim_list_table.html', {'claims': get_all_claims, 'flagged': get_all_flagged})
 
 def display_claim_list(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     employee_id = request.session.get('employee_id')
     return render(request, 'core/claim_list_page/claim_list_page.html', {'employee_id': employee_id})
 
 def load_claim_detail(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     get_all_claim_detail = ClaimDetail.objects.all()
     return render(request, 'core/claim_list_page/claim_detail_table.html', {'claim_detail': get_all_claim_detail})
 
-def display_claim_detail(request):
-    return render(request, 'core/claim_list_page/claim_detail.html')
-
 def search_claim_detail(request, claim_id):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     get_claim = get_object_or_404(ClaimList, id=claim_id)
     get_detail = get_object_or_404(ClaimDetail, claim_id__id=claim_id)
+    get_detail.cpt_codes_list = [code.strip() for code in get_detail.cpt_codes.split(',')]
+
     context = {
         'claim': get_claim,
         'detail': get_detail
@@ -41,18 +48,24 @@ def search_claim_detail(request, claim_id):
 def load_navbar(request):
     page_context = request.headers.get('X-Page', '')
     show_search = page_context == 'claim_list'
-    return render(request, 'core/navbar.html', {'show': show_search})
+    return render(request, 'core/base_components/navbar.html', {'show': show_search})
 
 def load_login_card(request):
     return render(request, 'core/login_page/login_card.html')
 
 def login_page(request):
+    if request.session.get('employee_id'):
+        return redirect('/claim_list/')
     return render(request, 'core/login_page/login_page.html')
 
 def load_register_card(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     return render(request, 'core/register_page/register_card.html')
 
 def register_page(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     return render(request, 'core/register_page/register_page.html')
 
 def employee_login(request):
@@ -71,15 +84,16 @@ def employee_login(request):
                 response['HX-Redirect'] = '/claim_list/'
                 return response
             else:
-                return HttpResponse("Invalid Password")
+                return HttpResponse('<div class="mt-6 text-red-600 text-center border-2 border-red-300 rounded">Invalid Password</div>')
         except Employee.DoesNotExist:
-            return HttpResponse("Employee Not found or wrong username or password")
+            return HttpResponse('<div class="mt-6 text-red-600 text-center border-2 border-red-300 rounded"> Invalid Username or Password</div>')
     return load_claim_list(request)
 
 def employee_logout(request):
     if 'employee_id' in request.session:
         del request.session['employee_id']
         del request.session['employee_type']
+        del request.session['employee_name']
     return login_page(request)
 
 def create_employee(request):
@@ -91,7 +105,7 @@ def create_employee(request):
         employee_type = request.POST.get("employee_type")
 
         if Employee.objects.filter(employee_username=username).exists():
-            return HttpResponse("Username already exists, please choose a different username", status=400)
+            return HttpResponse('<div class="text-red-600 text-center border-2 border-red-300 rounded">Username already exists, please choose a different username</div>', status=400)
         
         Employee.objects.create(
             employee_username=username,
@@ -100,10 +114,12 @@ def create_employee(request):
             employee_last_name=last_name,
             employee_type=employee_type
         )
-        return HttpResponse('<div class="text-green-600 font-semibold">New User Created!</div>')
+        return HttpResponse('<div class="text-green-600 font-semibold text-center border-2 border-green-200 rounded">New User Created!</div>')
     return register_page(request)
 
 def toggle_flag(request, claim_id):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     employee_id = request.session.get('employee_id')
 
     if not employee_id:
@@ -123,6 +139,8 @@ def toggle_flag(request, claim_id):
     return JsonResponse({'flagged': True})
 
 def save_annotation(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     claim_id = request.POST.get("selectedClaimID")
     employee_id = request.POST.get("selectedEmployeeID")
     content=request.POST.get("annotationContent")
@@ -145,6 +163,8 @@ def save_annotation(request):
     return JsonResponse({"success": True, "action": "updated"})
 
 def get_annotation(request, claim_id):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     employee_id = request.session.get('employee_id')
 
     try:
@@ -154,6 +174,8 @@ def get_annotation(request, claim_id):
         return JsonResponse({'annotation': ""})
     
 def save_note(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     claim_id = request.POST.get("selectedClaimID")
     employee_id = request.POST.get("selectedEmployeeID")
     content = request.POST.get("noteContent")
@@ -176,6 +198,8 @@ def save_note(request):
     return JsonResponse({"success": True, "action": "updated"})
         
 def get_note(request, claim_id):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     employee_id = request.session.get('employee_id')
 
     try:
@@ -185,6 +209,8 @@ def get_note(request, claim_id):
         return JsonResponse({'note': ''})
 
 def get_employee(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     query = request.GET.get('search', '')
     get_all_employees = Employee.objects.filter(
         Q(id__icontains=query) | Q(employee_username__icontains=query)
@@ -192,34 +218,52 @@ def get_employee(request):
     return render(request, 'core/admin_page/employee_function/employee_table.html', {'employees': get_all_employees})
 
 def display_employee(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     return render(request, 'core/admin_page/employee_function/display_employee.html')
 
 def get_all_note(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     get_all_notes = Note.objects.all()
     return render(request, 'core/admin_page/note_function/note_table.html', {'notes': get_all_notes})
 
 def display_note(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     return render(request, 'core/admin_page/note_function/display_note.html')
 
 def get_all_annotation(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     get_all_annotations = Annotation.objects.all()
     return render(request, 'core/admin_page/annotation_function/annotation_table.html', {'annotations': get_all_annotations})
 
 def display_annotation(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     return render(request, 'core/admin_page/annotation_function/display_annotation.html')
 
 def get_all_flag(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     get_all_flags = Flag.objects.all()
     return render(request, 'core/admin_page/flag_function/flag_table.html', {'flags': get_all_flags})
 
 def display_flag(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     return render(request, 'core/admin_page/flag_function/display_flag.html')
 
 def count_flagged(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     flag_count = len(Flag.objects.all())
     return render(request, 'core/admin_page/dashboard/display_flagged.html', {'totalFlagged': flag_count})
 
 def get_underpayment(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     get_all_claim = ClaimList.objects.all()
     underpayment = 0
     for claim in get_all_claim:
@@ -229,4 +273,11 @@ def get_underpayment(request):
     return render(request, 'core/admin_page/dashboard/display_underpayment.html', {'underpayment': float(underpayment)})
 
 def load_dashboard(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
     return render(request, 'core/admin_page/dashboard/dashboard.html')
+
+def load_back_button(request):
+    if not request.session.get('employee_id'):
+        return redirect('/')
+    return render(request, 'core/base_components/back_button.html')
