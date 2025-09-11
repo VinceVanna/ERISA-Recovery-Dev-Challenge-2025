@@ -8,6 +8,8 @@ class ClaimList(models.Model):
     status = models.CharField(max_length=100)
     insurer_name = models.CharField(max_length=100)
     discharge_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"ID: {self.id} - Patient Name: {self.patient_name}"
@@ -16,6 +18,8 @@ class ClaimDetail(models.Model):
     claim_id = models.ForeignKey(ClaimList, on_delete=models.CASCADE)
     denial_reason = models.CharField(max_length=255)
     cpt_codes = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"ID: {self.id} - Claim ID: {self.claim_id}"

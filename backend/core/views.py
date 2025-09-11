@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from .models import ClaimList, ClaimDetail, Employee, Flag, Annotation, Note
@@ -112,7 +113,9 @@ def create_employee(request):
             employee_password=make_password(password),
             employee_first_name=first_name,
             employee_last_name=last_name,
-            employee_type=employee_type
+            employee_type=employee_type,
+            created_at=timezone.now(),
+            updated_at=timezone.now()
         )
         return HttpResponse('<div class="text-green-600 font-semibold text-center border-2 border-green-200 rounded">New User Created!</div>')
     return register_page(request)
@@ -132,7 +135,10 @@ def toggle_flag(request, claim_id):
     except ClaimList.DoesNotExist:
         return JsonResponse({'error': 'Claim not found'}, status=404)
 
-    flag, created = Flag.objects.get_or_create(claim_id=claim, employee_id=employee)
+    flag, created = Flag.objects.get_or_create(
+        claim_id=claim, 
+        employee_id=employee,
+        defaults={'created_at': timezone.now(), 'updated_at': timezone.now()})
     if not created:
         flag.delete()
         return JsonResponse({'flagged': False})
@@ -157,7 +163,9 @@ def save_annotation(request):
         claim_id=claim,
         employee_id = employee,
         defaults={
-            "content": content
+            "content": content,
+            "created_at": timezone.now(),
+            "updated_at": timezone.now()
         }
     )
     return JsonResponse({"success": True, "action": "updated"})
@@ -192,7 +200,9 @@ def save_note(request):
         claim_id=claim,
         employee_id=employee,
         defaults={
-            "content": content
+            "content": content,
+            "created_at": timezone.now(),
+            "updated_at": timezone.now()
         }
     )
     return JsonResponse({"success": True, "action": "updated"})
