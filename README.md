@@ -11,7 +11,7 @@
 
 # Installation
   * Must have Python Version: 3.9.13+
-  * Must Have Node.js Version: 18+ or 20.x.x
+  * Must have Node.js Version: 18+ or 20.x.x
   * Code Editor: VSCode
   ## If using Git Repo
    ![Alt](images/Clone_Repo.png)
