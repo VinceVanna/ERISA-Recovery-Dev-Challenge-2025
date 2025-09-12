@@ -12,11 +12,12 @@
 # Installition
   * Must have Python Version: 3.9.13+
   * Code Editor: VSCode
-  1. ls (Show which directories are accessible
-  2. cd into working directory ```cd ERISA-Recovery-Dev-Challenge-2025-main``` (Or the file before you have access to ./backend/ or ./frontend/)
-  3. Create Python env ```python -m venv env```
-  4. Start Python env 
-  * Must be in the Python env
+  1. Create Python env ```python -m venv env```
+  2. Start Python env
+     * Must be in the Python env
+  3. ls (Show which directories are accessible)
+  4. cd into working directory ```cd ERISA-Recovery-Dev-Challenge-2025-main``` (Or the file before you have access to ./backend/ or ./frontend/)
+  
   ```
   env\Scripts\activate
   ```
