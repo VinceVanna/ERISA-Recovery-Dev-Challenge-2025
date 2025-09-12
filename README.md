@@ -9,8 +9,9 @@
 ## Database:
   * SQLite
 
-# Installition
+# Installation
   * Must have Python Version: 3.9.13+
+  * Must Have Node.js Version: 18+ or 20.x.x
   * Code Editor: VSCode
   1. ls (Show which directories are accessible)
   2. cd into working directory ```cd ERISA-Recovery-Dev-Challenge-2025-main``` (Or the directory before you access ./backend/ or ./frontend/)
@@ -19,10 +20,10 @@
   ```
   env\Scripts\activate
   ```
-  * If asked what which interpreter to use
+  * If asked which interpreter to use
     1. Do 'Ctrl+Shift+P' on Windows or 'Cmd+Shift+P' on Mac
     2. Type ```Python: Select Interpreter```
-    3. Choose the env that was created or set up a new env using python 3.9.13+
+    3. Choose the env that was created or set up a new env using Python 3.9.13+
   * Must be in the Python env
   5. Cd into the backend folder ```./backend/```
   ```
@@ -38,21 +39,21 @@
   * -> search for changes ```python manage.py makemigrations```
   * -> applies changes```python manage.py migrate```
   * -> runs django server```python manage.py runserver```
-  * -> Open brower ```127.0.0.1:8000/admin/```
+  * -> Open brower ```127.0.0.1:8000```
 
   # If editing CSS
-  1. Open a new powershell
+  1. Open a new PowerShell
   2. cd '/frontend/
-  * Command starts tailwindcss and watchs for any css changes and applies it to the HTML
+  * Command starts tailwindcss and watches for any CSS changes and applies them to the HTML
   * -> ```npx tailwindcss -i .\css\tailwind.css -o .\static\css\output.css --watch --verbose```
 
   ## Using base Command
   ### load_data 
-  1. Command will only work with .json or .csv extentions
+  1. Command will only work with .json or .csv extensions
   * Must be in ./backend/ folder
   * -> 'help' command to view details of the command ```python manage.py help load_data```
   * -> executes command ```python manage.py load_data <path_to_data> --model=<ClaimList|ClaimDetail> --app=core```
-    - Command will only use ClaimList OR ClaimDetail not both
+    - Command will only use ClaimList OR ClaimDetail, not both
   # Superuser & Login Infomation
   ## If data is not cleared
 ```
