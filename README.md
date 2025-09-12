@@ -15,9 +15,7 @@
   1. ls (Show which directories are accessible)
   2. cd into working directory ```cd ERISA-Recovery-Dev-Challenge-2025-main``` (Or the directory before you access ./backend/ or ./frontend/)
   3. Create Python env ```python -m venv env```
-  4. Start Python env 
-  * Must be in the Python env
-  
+  4. Start Python env   
   ```
   env\Scripts\activate
   ```
@@ -25,6 +23,7 @@
     1. Do 'Ctrl+Shift+P' on Windows or 'Cmd+Shift+P' on Mac
     2. Type ```Python: Select Interpreter```
     3. Choose the env that was created or set up a new env using python 3.9.13+
+  * Must be in the Python env
   5. Cd into the backend folder ```./backend/```
   ```
   pip install -r requirements.txt
