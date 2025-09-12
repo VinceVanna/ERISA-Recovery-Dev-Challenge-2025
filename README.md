@@ -39,8 +39,10 @@
   * -> applies changes```python manage.py migrate```
   * -> runs django server```python manage.py runserver```
   * -> Open brower ```127.0.0.1:8000/admin/```
-  2. Open a new powershell
-  3. cd '/frontend/
+
+  # If editing CSS
+  1. Open a new powershell
+  2. cd '/frontend/
   * Command starts tailwindcss and watchs for any css changes and applies it to the HTML
   * -> ```npx tailwindcss -i .\css\tailwind.css -o .\static\css\output.css --watch --verbose```
 
@@ -71,7 +73,7 @@
   
    ## Create Superuser
    * -> ```python manage.py createsuperuser```
-   * Enter desired <Username>
+   * Enter desired ```<Username>```
    * Email is optional
    * Password (Django has a strength requirement)
    * -> Execute ```python manage.py runserver```
