@@ -28,7 +28,7 @@
    4. Extract contents
    5. Open the directory in VSCode
   ## Installing Required Libraries
-  1. ls (Show which directories are accessible)
+  1. ```ls``` (Show which directories are accessible)
   2. cd into working directory ```cd ERISA-Recovery-Dev-Challenge-2025-main``` (Or the directory before you access ./backend/ or ./frontend/)
   3. Create Python env ```python -m venv env```
   4. Start Python env   
