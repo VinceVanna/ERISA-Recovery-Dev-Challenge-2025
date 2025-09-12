@@ -14,7 +14,7 @@
   * Must Have Node.js Version: 18+ or 20.x.x
   * Code Editor: VSCode
   ## If using Git Repo
-   ![Alt](Clone_Repo.png)
+   ![Alt](images/Clone_Repo.png)
    1. Open VSCode
    2. Create a new project folder
    3. Go to the GitHub Repository
