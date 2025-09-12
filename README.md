@@ -1,12 +1,12 @@
 # Project Tech Stack
 
-## Frontend:
+## Frontend
   * HTML/CSS
   * Frameworks: HTMX & Alpine.js
   * CSS Style: TailwindCSS
-## Backend:
+## Backend
   * Django v4+/Python v3.9+
-## Database:
+## Database
   * SQLite
 
 # Installation
