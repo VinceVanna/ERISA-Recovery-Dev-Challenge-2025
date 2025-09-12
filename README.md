@@ -59,7 +59,7 @@
   # If Editing CSS
   1. Open a new PowerShell
   2. cd '/frontend/
-  * Executing this command will watch for any CSS changes within the HTML
+  * Executing this command, TailwindCSS will watch for any CSS changes within the HTML
   * -> ```npx tailwindcss -i .\css\tailwind.css -o .\static\css\output.css --watch --verbose```
 
   ## Using Base Command
