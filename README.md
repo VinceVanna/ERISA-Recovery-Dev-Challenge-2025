@@ -40,7 +40,7 @@
     2. Type ```Python: Select Interpreter```
     3. Choose the env that was created or set up a new env using Python 3.9.13+
   * Must be in the Python env
-  5. Cd into the backend folder ```./backend/```
+  5. cd into the backend folder ```./backend/```
   ```
   pip install -r requirements.txt
   ```
