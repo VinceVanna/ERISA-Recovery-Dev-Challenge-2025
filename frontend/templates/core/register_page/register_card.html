@@ -1,34 +1,36 @@
 <div class="flex items-center justify-center h-screen bg-gray-100">
-  <div class="bg-white shadow-xl rounded-lg p-8 w-96 min-h-[500px] flex flex-col border-2 border-black">
-
-    <div class="flex-grow flex flex-col justify-center">
+  <div class="bg-white shadow-xl rounded-lg p-0 w-96 min-h-[460px] flex flex-col border-2">
+    <div class="bg-blue-500 w-full h-28 rounded-t-lg flex items-center justify-center">
+      <h1 class="text-white text-xl font-bold">New Employee</h1>
+    </div>
+    <div class="p-4 flex flex-col gap-4">
       <form
         hx-post="/create_employee/"
         hx-target="#register-form-response"
         hx-swap="innerHTML"
         class="space-y-4"
       >
-        <div class="flex items-center justify-between">
+        <div class="mb-2 flex items-center justify-between">
           <label class="w-1/2 text-left pl-2">Username:</label>
           <input type="text" name="username" placeholder="ex. Username" class="w-1/2 border rounded px-2 py-1" required/>
         </div>
 
-        <div class="flex items-center justify-between">
+        <div class="mb-2 flex items-center justify-between">
           <label class="w-1/2 text-left pl-2">First Name:</label>
           <input type="text" name="first_name" placeholder="ex. First Name" class="w-1/2 border rounded px-2 py-1" required/>
         </div>
 
-        <div class="flex items-center justify-between">
+        <div class="mb-2 flex items-center justify-between">
           <label class="w-1/2 text-left pl-2">Last Name:</label>
           <input type="text" name="last_name" placeholder="ex. Last Name" class="w-1/2 border rounded px-2 py-1" required/>
         </div>
 
-        <div class="flex items-center justify-between">
+        <div class="mb-2 flex items-center justify-between">
           <label class="w-1/2 text-left pl-2">Password:</label>
           <input type="password" name="password" placeholder="ex. Password" class="w-1/2 border rounded px-2 py-1" required/>
         </div>
 
-        <div class="flex items-center justify-between">
+        <div class="mb-2 flex items-center justify-between">
           <label class="w-1/2 text-left pl-2">Employee Type:</label>
           <select name="employee_type" class="w-1/2 border rounded px-2 py-1" required>
             <option>Employee</option>
@@ -36,7 +38,7 @@
           </select>
         </div>
 
-        <div class="flex justify-center pt-4">
+        <div class="mb-2 flex justify-center pt-4">
           <button type="submit" class="border-2 border-blue-600 rounded px-6 py-2 text-white bg-blue-600 hover:bg-blue-500 hover:border-blue-500 w-60">
             Create New Employee
           </button>
