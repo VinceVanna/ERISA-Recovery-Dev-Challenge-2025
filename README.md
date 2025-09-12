@@ -13,7 +13,7 @@
   * Must have Python Version: 3.9.13+
   * Must have Node.js Version: 18+ or 20.x.x
   * Code Editor: VSCode
-  ## If using Git Repo
+  ## If using Github Repository
    ![Alt](images/Clone_Repo.png)
    1. Open VSCode
    2. Create a new project folder
@@ -58,8 +58,8 @@
 
   # If Editing CSS
   1. Open a new PowerShell
-  2. cd '/frontend/
-  * Executing this command, TailwindCSS will watch for any CSS changes within the HTML
+  2. cd ./frontend/
+  * By executing this command, TailwindCSS will watch for any CSS changes and update the HTML
   * -> ```npx tailwindcss -i .\css\tailwind.css -o .\static\css\output.css --watch --verbose```
 
   ## Using Base Command
@@ -67,9 +67,9 @@
   1. Command will only work with .json or .csv extensions
   * Must be in ./backend/ folder
   * -> 'help' command to view details of the command ```python manage.py help load_data```
-  * -> executes command ```python manage.py load_data <path_to_data> --model=<ClaimList|ClaimDetail> --app=core```
+  * -> execute command ```python manage.py load_data <path_to_data> --model=<ClaimList|ClaimDetail> --app=core```
     - Command will only use ClaimList OR ClaimDetail, not both
-  # Superuser & Login Infomation
+  # Superuser & Login Information
   ## If Data is Not Cleared
    * Existing Superuser (if data is not cleared)
 ```
