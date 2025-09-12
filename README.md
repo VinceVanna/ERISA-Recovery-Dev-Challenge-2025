@@ -5,7 +5,7 @@
   * Frameworks: HTMX & Alpine.js
   * CSS Style: TailwindCSS
 ## Backend
-  * Django v4+/Python v3.9+
+  * Django v4+/Python v3.9.13+
 ## Database
   * SQLite
 
