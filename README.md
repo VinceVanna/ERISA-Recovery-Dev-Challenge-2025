@@ -13,6 +13,9 @@
   * Must have Python Version: 3.9.13+
   * Must Have Node.js Version: 18+ or 20.x.x
   * Code Editor: VSCode
+  ## If using Git Repo
+   1. Clone repo
+   2. 
   1. ls (Show which directories are accessible)
   2. cd into working directory ```cd ERISA-Recovery-Dev-Challenge-2025-main``` (Or the directory before you access ./backend/ or ./frontend/)
   3. Create Python env ```python -m venv env```
