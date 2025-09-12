@@ -52,9 +52,9 @@
   * Must be in the Python env
   1. cd ./backend/
   * -> search for changes ```python manage.py makemigrations```
-  * -> applies changes```python manage.py migrate```
-  * -> runs django server```python manage.py runserver```
-  * -> Open brower ```127.0.0.1:8000```
+  * -> apply changes ```python manage.py migrate```
+  * -> runs django server ```python manage.py runserver```
+  * -> open browser ```127.0.0.1:8000```
 
   # If Editing CSS
   1. Open a new PowerShell
