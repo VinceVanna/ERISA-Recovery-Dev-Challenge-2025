@@ -1,4 +1,4 @@
-# Tech Stack
+# Project Tech Stack
 
 ## Frontend:
   * HTML/CSS
@@ -14,8 +14,19 @@
   * Must Have Node.js Version: 18+ or 20.x.x
   * Code Editor: VSCode
   ## If using Git Repo
-   1. Clone repo
-   2. 
+   1. Open VSCode
+   2. Create a new project folder
+   3. Go to the GitHub Repository
+   4. Click on code
+   5. Copy the http URL (<repoURL>.git)
+   6. Paste it into the command line (CMD)
+  ## If Downloading the .ZIP File
+   1. Go to the GitHub Repository
+   2. Click on code
+   3. Click on "download .ZIP"
+   4. Extract contents
+   5. Open the directory in VSCode
+  ## Installing Required Libraries
   1. ls (Show which directories are accessible)
   2. cd into working directory ```cd ERISA-Recovery-Dev-Challenge-2025-main``` (Or the directory before you access ./backend/ or ./frontend/)
   3. Create Python env ```python -m venv env```
@@ -44,21 +55,22 @@
   * -> runs django server```python manage.py runserver```
   * -> Open brower ```127.0.0.1:8000```
 
-  # If editing CSS
+  # If Editing CSS
   1. Open a new PowerShell
   2. cd '/frontend/
   * Command starts tailwindcss and watches for any CSS changes and applies them to the HTML
   * -> ```npx tailwindcss -i .\css\tailwind.css -o .\static\css\output.css --watch --verbose```
 
-  ## Using base Command
-  ### load_data 
+  ## Using Base Command
+  ### "load_data"
   1. Command will only work with .json or .csv extensions
   * Must be in ./backend/ folder
   * -> 'help' command to view details of the command ```python manage.py help load_data```
   * -> executes command ```python manage.py load_data <path_to_data> --model=<ClaimList|ClaimDetail> --app=core```
     - Command will only use ClaimList OR ClaimDetail, not both
   # Superuser & Login Infomation
-  ## If data is not cleared
+  ## If Data is Not Cleared
+   * Existing Superuser (if data is not cleared)
 ```
       Superuser for SQLite
        - Username: admin
